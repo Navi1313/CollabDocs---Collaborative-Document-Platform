@@ -4,13 +4,16 @@ from django.dispatch import receiver
 
 @receiver(post_save, sender='api.Document')
 def create_document_audit_log(sender, instance, created, **kwargs):
-    """Write an AuditLog entry every time a Document is saved."""
-    from api.models import AuditLog  # local import avoids circular dependency
+    """
+    Fires automatically every time a Document is saved.
+    'created' = True on INSERT, False on UPDATE.
+    We never call this from views — Django fires it via the signal system.
+    """
+    from api.models import AuditLog  # local import avoids circular import
 
-    action = 'created' if instance._state.adding or created else 'updated'
     AuditLog.objects.create(
         actor=instance.created_by,
-        action=action,
+        action='created' if created else 'updated',
         model_name='Document',
-        object_id=instance.pk,
+        object_id=str(instance.id),  # convert UUID → string, AuditLog.object_id is CharField(100)
     )
