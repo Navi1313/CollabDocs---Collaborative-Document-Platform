@@ -1,0 +1,13 @@
+$kind: http-request
+description: "Add tags to a document. Expected: 200 OK — list of tags added."
+url: "{{base_url}}/api/documents/{{document_id}}/tags/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "tags": ["python", "django"]
+    }
+order: 6000

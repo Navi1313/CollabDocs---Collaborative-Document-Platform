@@ -1,0 +1,5 @@
+$kind: http-request
+description: "List all workspace members. Expected: 200 OK — list with 2 members, each showing user_email and user_full_name."
+url: "{{base_url}}/api/workspaces/{{workspace_id}}/members/"
+method: GET
+order: 4000

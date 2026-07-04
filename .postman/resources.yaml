@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 652bef14-2ced-489c-895e-d1430c8cd76d
+
+localResources:
+  collections:
+    - ../CollabDocs.postman_collection.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/CollabDocs: 2b460148-b0a7-4074-a4b8-214c1558ad0f

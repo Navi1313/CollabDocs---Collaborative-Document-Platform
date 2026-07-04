@@ -1,0 +1,7 @@
+$kind: http-request
+description: "List documents filtered by workspace. Also test: /api/documents/, /api/documents/?status=published, /api/documents/?search=REST, /api/documents/?tag=backend"
+url: "{{base_url}}/api/documents/?workspace={{workspace_id}}"
+method: GET
+queryParams:
+  workspace: "{{workspace_id}}"
+order: 3000

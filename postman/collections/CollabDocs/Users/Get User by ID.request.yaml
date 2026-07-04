@@ -1,0 +1,5 @@
+$kind: http-request
+description: "Get user by ID. Expected: 200 OK with user data including full_name."
+url: "{{base_url}}/api/users/{{user1_id}}/"
+method: GET
+order: 2000

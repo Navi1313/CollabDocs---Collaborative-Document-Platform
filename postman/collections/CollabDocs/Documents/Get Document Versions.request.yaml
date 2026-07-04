@@ -1,0 +1,5 @@
+$kind: http-request
+description: "Get all versions of a document. Expected: 200 OK — list of 2 versions in order, each with version_number, content, saved_by_email."
+url: "{{base_url}}/api/documents/{{document_id}}/versions/"
+method: GET
+order: 4000

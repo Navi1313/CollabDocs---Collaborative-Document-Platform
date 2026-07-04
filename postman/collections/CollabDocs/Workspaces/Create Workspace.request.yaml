@@ -1,0 +1,14 @@
+$kind: http-request
+description: "Create a workspace. Expected: 201 Created. The atomic transaction also auto-adds the owner as admin member. Save workspace_id as a collection variable."
+url: "{{base_url}}/api/workspaces/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "name": "Engineering Team",
+        "owner": "{{user1_id}}"
+    }
+order: 1000

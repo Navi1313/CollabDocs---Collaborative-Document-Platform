@@ -1,0 +1,14 @@
+$kind: http-request
+description: "Add a member to the workspace. Expected: 201 Created. Sending the same request again should return 409 Conflict."
+url: "{{base_url}}/api/workspaces/{{workspace_id}}/members/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "user": "{{user2_id}}",
+        "role": "editor"
+    }
+order: 3000

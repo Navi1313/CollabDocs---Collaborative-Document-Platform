@@ -1,0 +1,5 @@
+$kind: http-request
+description: "Get workspace summary. Expected: 200 OK with workspace_id, workspace_name, document_count, member_count, total_comments."
+url: "{{base_url}}/api/workspaces/{{workspace_id}}/summary/"
+method: GET
+order: 5000

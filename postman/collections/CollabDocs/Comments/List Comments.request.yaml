@@ -1,0 +1,7 @@
+$kind: http-request
+description: "List comments for a document. Expected: 200 OK — only top-level comments (parent=None), with reply_count on each."
+url: "{{base_url}}/api/comments/?document={{document_id}}"
+method: GET
+queryParams:
+  document: "{{document_id}}"
+order: 2000

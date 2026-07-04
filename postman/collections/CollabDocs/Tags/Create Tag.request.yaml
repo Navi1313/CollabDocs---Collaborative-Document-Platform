@@ -1,0 +1,13 @@
+$kind: http-request
+description: "Create a tag. Expected: 201 Created. Sending the same request again should return 400 Bad Request (unique constraint violation)."
+url: "{{base_url}}/api/tags/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "name": "frontend"
+    }
+order: 1000

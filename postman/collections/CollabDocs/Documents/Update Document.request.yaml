@@ -1,0 +1,16 @@
+$kind: http-request
+description: "Update a document. Expected: 200 OK. Creates DocumentVersion 2 atomically. Signal fires with action='updated' and writes a second AuditLog entry."
+url: "{{base_url}}/api/documents/{{document_id}}/"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "title": "API Design Guide",
+        "content": "Updated content with more detail about REST principles.",
+        "workspace": "{{workspace_id}}",
+        "status": "published"
+    }
+order: 2000

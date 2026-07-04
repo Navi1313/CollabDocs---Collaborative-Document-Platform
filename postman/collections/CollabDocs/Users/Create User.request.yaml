@@ -1,0 +1,18 @@
+$kind: http-request
+description: "Create a new user. Expected: 201 Created. Verify full_name appears and password does NOT appear in the response."
+url: "{{base_url}}/api/users/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "username": "anjali01",
+        "first_name": "Anjali",
+        "last_name": "Shah",
+        "email": "anjali@collabdocs.com",
+        "phone": "9876543210",
+        "password": "Test@1234"
+    }
+order: 1000

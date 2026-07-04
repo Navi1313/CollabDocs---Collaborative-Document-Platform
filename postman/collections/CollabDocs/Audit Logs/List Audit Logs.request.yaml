@@ -1,0 +1,7 @@
+$kind: http-request
+description: "List audit logs filtered by actor. Also test: /api/audit-logs/, /api/audit-logs/?action=created, /api/audit-logs/?from=2026-01-01&to=2026-12-31. Expected: 2 entries — action='created' and action='updated', written automatically by the signal."
+url: "{{base_url}}/api/audit-logs/?actor={{user1_id}}"
+method: GET
+queryParams:
+  actor: "{{user1_id}}"
+order: 1000

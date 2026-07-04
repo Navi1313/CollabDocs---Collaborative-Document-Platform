@@ -1,0 +1,5 @@
+$kind: http-request
+description: "Get document stats. Expected: 200 OK with document_id, title, version_count, comment_count, contributor_count."
+url: "{{base_url}}/api/documents/{{document_id}}/stats/"
+method: GET
+order: 5000

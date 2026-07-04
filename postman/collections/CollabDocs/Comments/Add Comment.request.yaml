@@ -1,0 +1,14 @@
+$kind: http-request
+description: 'Add a comment to a document. Expected: 201 Created with reply_count: 0. Save comment_id as a collection variable. To add a reply, include "parent": "{{comment_id}}" in the body.'
+url: "{{base_url}}/api/comments/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "document": "{{document_id}}",
+        "content": "This is a great document!"
+    }
+order: 1000

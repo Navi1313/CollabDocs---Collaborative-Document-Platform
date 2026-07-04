@@ -1,0 +1,17 @@
+$kind: http-request
+description: "Create a document. Expected: 201 Created. Atomically creates Document + first DocumentVersion. Signal fires and writes AuditLog with action='created'. Save document_id as a collection variable."
+url: "{{base_url}}/api/documents/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "title": "API Design Guide",
+        "content": "This document covers REST API design principles.",
+        "workspace": "{{workspace_id}}",
+        "status": "draft",
+        "tag_names": ["backend", "api"]
+    }
+order: 1000

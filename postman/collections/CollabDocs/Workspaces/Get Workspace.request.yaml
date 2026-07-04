@@ -1,0 +1,5 @@
+$kind: http-request
+description: "Get workspace by ID. Expected: 200 OK with member_count: 1 (owner auto-added as admin)."
+url: "{{base_url}}/api/workspaces/{{workspace_id}}/"
+method: GET
+order: 2000

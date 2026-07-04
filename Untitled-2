@@ -1,0 +1,398 @@
+{
+  "info": {
+    "name": "CollabDocs",
+    "_postman_id": "collabdocs-collection-v1",
+    "description": "Postman collection for the CollabDocs API project — Phase 9 Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"anjali01\",\n    \"first_name\": \"Anjali\",\n    \"last_name\": \"Shah\",\n    \"email\": \"anjali@collabdocs.com\",\n    \"phone\": \"9876543210\",\n    \"password\": \"Test@1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", ""]
+            },
+            "description": "Create a new user. Expected: 201 Created. Verify full_name appears and password does NOT appear in the response."
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user1_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user1_id}}", ""]
+            },
+            "description": "Get user by ID. Expected: 200 OK with user data including full_name."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workspaces",
+      "item": [
+        {
+          "name": "Create Workspace",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Engineering Team\",\n    \"owner\": \"{{user1_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "workspaces", ""]
+            },
+            "description": "Create a workspace. Expected: 201 Created. The atomic transaction also auto-adds the owner as admin member. Save workspace_id as a collection variable."
+          }
+        },
+        {
+          "name": "Get Workspace",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "workspaces", "{{workspace_id}}", ""]
+            },
+            "description": "Get workspace by ID. Expected: 200 OK with member_count: 1 (owner auto-added as admin)."
+          }
+        },
+        {
+          "name": "Add Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user\": \"{{user2_id}}\",\n    \"role\": \"editor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/members/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "workspaces", "{{workspace_id}}", "members", ""]
+            },
+            "description": "Add a member to the workspace. Expected: 201 Created. Sending the same request again should return 409 Conflict."
+          }
+        },
+        {
+          "name": "List Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/members/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "workspaces", "{{workspace_id}}", "members", ""]
+            },
+            "description": "List all workspace members. Expected: 200 OK — list with 2 members, each showing user_email and user_full_name."
+          }
+        },
+        {
+          "name": "Workspace Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/workspaces/{{workspace_id}}/summary/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "workspaces", "{{workspace_id}}", "summary", ""]
+            },
+            "description": "Get workspace summary. Expected: 200 OK with workspace_id, workspace_name, document_count, member_count, total_comments."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Create Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"API Design Guide\",\n    \"content\": \"This document covers REST API design principles.\",\n    \"workspace\": \"{{workspace_id}}\",\n    \"status\": \"draft\",\n    \"tag_names\": [\"backend\", \"api\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", ""]
+            },
+            "description": "Create a document. Expected: 201 Created. Atomically creates Document + first DocumentVersion. Signal fires and writes AuditLog with action='created'. Save document_id as a collection variable."
+          }
+        },
+        {
+          "name": "Update Document",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"API Design Guide\",\n    \"content\": \"Updated content with more detail about REST principles.\",\n    \"workspace\": \"{{workspace_id}}\",\n    \"status\": \"published\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", ""]
+            },
+            "description": "Update a document. Expected: 200 OK. Creates DocumentVersion 2 atomically. Signal fires with action='updated' and writes a second AuditLog entry."
+          }
+        },
+        {
+          "name": "List Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/documents/?workspace={{workspace_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", ""],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "{{workspace_id}}"
+                }
+              ]
+            },
+            "description": "List documents filtered by workspace. Also test: /api/documents/, /api/documents/?status=published, /api/documents/?search=REST, /api/documents/?tag=backend"
+          }
+        },
+        {
+          "name": "Get Document Versions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/versions/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "versions", ""]
+            },
+            "description": "Get all versions of a document. Expected: 200 OK — list of 2 versions in order, each with version_number, content, saved_by_email."
+          }
+        },
+        {
+          "name": "Get Document Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/stats/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "stats", ""]
+            },
+            "description": "Get document stats. Expected: 200 OK with document_id, title, version_count, comment_count, contributor_count."
+          }
+        },
+        {
+          "name": "Add Tags to Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tags\": [\"python\", \"django\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/documents/{{document_id}}/tags/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documents", "{{document_id}}", "tags", ""]
+            },
+            "description": "Add tags to a document. Expected: 200 OK — list of tags added."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Add Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"document\": \"{{document_id}}\",\n    \"content\": \"This is a great document!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/comments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "comments", ""]
+            },
+            "description": "Add a comment to a document. Expected: 201 Created with reply_count: 0. Save comment_id as a collection variable. To add a reply, include \"parent\": \"{{comment_id}}\" in the body."
+          }
+        },
+        {
+          "name": "List Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/comments/?document={{document_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "comments", ""],
+              "query": [
+                {
+                  "key": "document",
+                  "value": "{{document_id}}"
+                }
+              ]
+            },
+            "description": "List comments for a document. Expected: 200 OK — only top-level comments (parent=None), with reply_count on each."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"frontend\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tags/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tags", ""]
+            },
+            "description": "Create a tag. Expected: 201 Created. Sending the same request again should return 400 Bad Request (unique constraint violation)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Audit Logs",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/audit-logs/?actor={{user1_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "audit-logs", ""],
+              "query": [
+                {
+                  "key": "actor",
+                  "value": "{{user1_id}}"
+                }
+              ]
+            },
+            "description": "List audit logs filtered by actor. Also test: /api/audit-logs/, /api/audit-logs/?action=created, /api/audit-logs/?from=2026-01-01&to=2026-12-31. Expected: 2 entries — action='created' and action='updated', written automatically by the signal."
+          }
+        }
+      ]
+    }
+  ]
+}

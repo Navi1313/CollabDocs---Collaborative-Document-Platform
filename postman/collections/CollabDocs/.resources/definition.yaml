@@ -1,0 +1,4 @@
+$kind: collection
+description: Postman collection for the CollabDocs API project — Phase 9 Testing
+variables:
+  base_url: http://127.0.0.1:8000
